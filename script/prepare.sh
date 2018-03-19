@@ -7,3 +7,4 @@ ROOT_DIR=`dirname $0`/..
 cd $ROOT_DIR
 
 docker exec -it slack-token-app npm install
+docker exec -it slack-token-app /bin/ash -c "cd contract && npm install"
