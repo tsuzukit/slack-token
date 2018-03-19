@@ -1,0 +1,29 @@
+version: "2"
+
+services:
+
+  mongo:
+    container_name: slack-token-mongo
+    image: slack-token-mongo
+    build: ./docker/mongo
+    volumes:
+      - ./data/mongo:/data/db
+
+  app:
+    image: slack-token-app
+    container_name: slack-token-app
+    build: ./docker/app
+    volumes:
+      - ./app:/var/app
+    links:
+      - mongo
+
+  nginx:
+    image: slack-token-nginx
+    container_name: slack-token-nginx
+    build: ./docker/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - app
