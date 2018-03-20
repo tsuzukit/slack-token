@@ -20,13 +20,14 @@ const provider = new Web3.providers.HttpProvider(conf.INFURA_ENDPOINT);
 const web3 = new Web3(provider);
 const address = conf.SERVER_ACCOUNT_ADDRESS;
 const privatekey = conf.SERVER_ACCOUNT_PRIVATE_KEY;
-const arguments = ["10000e18"];
 
 const bytecode = compiledToken.bytecode;
 const contract = new web3.eth.Contract(compiledToken.abi);
 
+const initialSupply = "10000000000000000000000";
 const gas = "2000000";
 const gasPrice = "2000000";
+const arguments = [initialSupply];
 const data = contract.deploy({ data: bytecode, arguments: arguments }).encodeABI();
 const transactionObject = {
   gas: gas,
