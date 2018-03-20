@@ -32,10 +32,16 @@ $ sh script/prepare.sh
 $ sh script/dev/start.sh
 ```
 
-## Test node app
+# Test Contract
 
 ```
-$ sh script/test/start.sh
+$ sh script/contract/test.sh
+```
+
+# Deploy contract to rinkeby
+
+```
+$ sh script/contract/deploy.sh
 ```
 
 # API
