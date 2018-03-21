@@ -20,16 +20,16 @@ $ cp ./app/.env.example ./app/.env
 $ sh script/dev/build.sh
 ```
 
-## Install dependencies
-
-```
-$ sh script/prepare.sh
-```
-
 ## Start container
 
 ```
 $ sh script/dev/start.sh
+```
+
+## Install dependencies (first time only)
+
+```
+$ sh script/prepare.sh
 ```
 
 # Test Contract
