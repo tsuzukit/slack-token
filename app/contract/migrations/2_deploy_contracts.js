@@ -1,6 +1,5 @@
-let SukiSukiDanToken = artifacts.require("./SukiSukiDanToken.sol");
+let CustomToken = artifacts.require("./CustomToken.sol");
 
 module.exports = function(deployer) {
-  const initialSupply = 10000e18;
-  deployer.deploy(SukiSukiDanToken, initialSupply);
+  deployer.deploy(CustomToken);
 };

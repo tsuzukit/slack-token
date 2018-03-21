@@ -13,7 +13,7 @@ let readConf = function () {
 };
 let conf = readConf();
 
-const compiledToken = require('../build/contracts/SukiSukiDanToken');
+const compiledToken = require('../build/contracts/CustomToken');
 
 const Web3 = require('web3');
 const provider = new Web3.providers.HttpProvider(conf.INFURA_ENDPOINT);
@@ -24,11 +24,9 @@ const privatekey = conf.SERVER_ACCOUNT_PRIVATE_KEY;
 const bytecode = compiledToken.bytecode;
 const contract = new web3.eth.Contract(compiledToken.abi);
 
-const initialSupply = "10000000000000000000000";
 const gas = "5000000";
-const gasPrice = "5000000";
-const arguments = [initialSupply];
-const data = contract.deploy({ data: bytecode, arguments: arguments }).encodeABI();
+const gasPrice = "1000000000";
+const data = contract.deploy({ data: bytecode, arguments: [] }).encodeABI();
 const transactionObject = {
   gas: gas,
   gasPrice: gasPrice,

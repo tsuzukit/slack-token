@@ -6,41 +6,76 @@ T.B.D
 
 T.B.D
 
-# Setup
+# セットアップ
 
-## Prepare env file
+## 環境ファイルを作成します
 
 ```
 $ cp ./app/.env.example ./app/.env
 ```
 
-## Build container
+内容は以下を参考に自分の環境に合わせて埋めてください
 
 ```
+MONGO_DATABASE=slack-token
+
+SALT=
+
+INFURA_ENDPOINT=https://rinkeby.infura.io/<Access Token>
+SERVER_ACCOUNT_ADDRESS=<Ether account address>
+SERVER_ACCOUNT_PRIVATE_KEY=<Ether account private key>
+
+CONTRACT_ADDRESS=<Deploy 済みの ERC20 token address>
+```
+
+ここで指定した `SERVER_ACCOUNT_ADDRESS` アカウントの保持する ERC20 をユーザーに配布します
+
+## イメージのビルド
+
+```bash
+# ローカル環境
 $ sh script/dev/build.sh
+
+# 本番環境 では ssl を使う関係上、下記コマンドを利用
+$ sh script/stg/build.sh
 ```
 
-## Start container
+## イメージの起動
 
-```
+```bash
+# ローカル環境
 $ sh script/dev/start.sh
+
+# 本番環境 では ssl を使う関係上、下記コマンドを利用
+$ sh script/stg/start.sh
 ```
 
-## Install dependencies (first time only)
+## 依存関係のあるライブラリのインストール (初回のみ)
 
-```
+```bash
 $ sh script/prepare.sh
 ```
 
-# Test Contract
+# 独自 ERC20 トークンの定義
+
+```bash
+
 
 ```
+
+# コントラクトのテスト
+
+`ganache-cli` を利用して、実際に ethereum の network にはコントラクトを deploy せずにテストを行います
+
+```bash
 $ sh script/contract/test.sh
 ```
 
-# Deploy contract to rinkeby
+# コントラクトの Deploy
 
-```
+環境ファイルで設定した INFURA の向先によって、どのネットワークに deploy されるかが決まります
+
+```bash
 $ sh script/contract/deploy.sh
 ```
 
@@ -51,6 +86,14 @@ Slack で使うために https 化する必要がある (恐らく配布時の�
 [Let's encrypt](https://letsencrypt.org/) などで取得した `fullchain.pem` と `privkey.pem` を この repository の root に置いてください (Symbolic link でも問題ありません)
 
 サーバーを起動する際には `docker-compose-ssl.yml` を使います。ssl 用の証明書は実行時に volume mount されます。
+
+```bash
+# 下記コマンドで ssl 設定をしてある nginx image を build します
+$ sudo sh script/stg/build.sh
+
+# 下記コマンドで証明書を上記コンテナにマウントしつつ、docker-compose でサービスを起動します
+$ sudo sh script/stg/start.sh
+```
 
 # API
 

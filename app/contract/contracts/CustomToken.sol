@@ -2,13 +2,14 @@ pragma solidity 0.4.19;
 
 import 'zeppelin-solidity/contracts/token/ERC20/MintableToken.sol';
 
-contract SukiSukiDanToken is MintableToken {
+contract CustomToken is MintableToken {
     address[] public tokenHolders;
     string public name = "Suki Suki Dan Token";
     string public symbol = "SSDT";
     uint8 public decimals = 18;
+    uint256 initialSupply = 10000e18;
 
-    function SukiSukiDanToken(uint256 initialSupply) public {
+    function CustomToken() public {
         totalSupply_ = initialSupply;
         balances[msg.sender] = initialSupply;
         tokenHolders.push(msg.sender);
