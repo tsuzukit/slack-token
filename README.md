@@ -58,9 +58,13 @@ $ sh script/prepare.sh
 
 # 独自 ERC20 トークンの定義
 
-```bash
+`app/contract/contracts/CustomToken.sol` の変数を修正してください
 
-
+```
+string public name = "Token の名前";
+string public symbol = "TICKER";
+uint8 public decimals = 18; // Token の最小単位 
+uint256 initialSupply = 10000e18; // 初期発行量 (1 = 最小単位なのでこの場合 10000 token の発行になる) 
 ```
 
 # コントラクトのテスト
