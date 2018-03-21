@@ -108,7 +108,7 @@ $ sudo sh script/stg/start.sh
 
 Slack の slash command は `/api/register/` に来るように設定してください
 
-![Slack の設定](/images/slack-token-image1.png)
+<img src="/images/slack-token-image1.png" width="300">
 
 ## Event
 
