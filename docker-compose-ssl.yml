@@ -21,7 +21,7 @@ services:
   nginx:
     image: slack-token-nginx
     container_name: slack-token-nginx
-    build: ./docker/nginx
+    build: ./docker/nginx-ssl
     volumes:
       - ./fullchain.pem:/etc/letsencrypt/fullchain.pem
       - ./privkey.pem:/etc/letsencrypt/privkey.pem
