@@ -25,6 +25,12 @@ contract('Token のテスト', async (accounts) => {
     assert.equal(accounts[0], owner);
   });
 
+  it("Token の owner は tokenHolders のはずだ", async () => {
+    let sukiSukiDanToken = await SukiSukiDanToken.deployed();
+    let tokenHolders = await sukiSukiDanToken.getTokenHolders.call();
+    assert.equal(accounts[0], tokenHolders[0]);
+  });
+
   it("Token は account 同士で transfer 可能なはずだ", async () => {
     let sukiSukiDanToken = await SukiSukiDanToken.deployed();
 
@@ -39,6 +45,34 @@ contract('Token のテスト', async (accounts) => {
     });
     account1Balance = await sukiSukiDanToken.balanceOf.call(accounts[1]);
     assert.equal(1e18, account1Balance.toNumber());
+
+    let tokenHolders = await sukiSukiDanToken.getTokenHolders.call();
+    assert.equal(2, tokenHolders.length);
+    assert.equal(accounts[1], tokenHolders[1]);
+  });
+
+  it("交換を繰り返しても tokenHolders は同じアドレスは１つだけ持つはずだ", async () => {
+    let sukiSukiDanToken = await SukiSukiDanToken.deployed();
+
+    sukiSukiDanToken.transfer(accounts[1], 1e18, {
+      from: accounts[0],
+    });
+
+    let tokenHolders = await sukiSukiDanToken.getTokenHolders.call();
+    assert.equal(2, tokenHolders.length);
+    assert.equal(accounts[1], tokenHolders[1]);
+  });
+
+  it("別のユーザーにもトークンは送れるはずだ", async () => {
+    let sukiSukiDanToken = await SukiSukiDanToken.deployed();
+
+    sukiSukiDanToken.transfer(accounts[5], 1e18, {
+      from: accounts[0],
+    });
+
+    let tokenHolders = await sukiSukiDanToken.getTokenHolders.call();
+    assert.equal(3, tokenHolders.length);
+    assert.equal(accounts[5], tokenHolders[2]);
   });
 
 });
