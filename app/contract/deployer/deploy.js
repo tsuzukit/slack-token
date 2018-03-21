@@ -25,8 +25,8 @@ const bytecode = compiledToken.bytecode;
 const contract = new web3.eth.Contract(compiledToken.abi);
 
 const initialSupply = "10000000000000000000000";
-const gas = "2000000";
-const gasPrice = "2000000";
+const gas = "5000000";
+const gasPrice = "5000000";
 const arguments = [initialSupply];
 const data = contract.deploy({ data: bytecode, arguments: arguments }).encodeABI();
 const transactionObject = {

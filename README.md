@@ -6,7 +6,7 @@ T.B.D
 
 T.B.D
 
-# Setup 
+# Setup
 
 ## Prepare env file
 
