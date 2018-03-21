@@ -24,8 +24,11 @@ SALT=
 INFURA_ENDPOINT=https://rinkeby.infura.io/<Access Token>
 SERVER_ACCOUNT_ADDRESS=<Ether account address>
 SERVER_ACCOUNT_PRIVATE_KEY=<Ether account private key>
-
 CONTRACT_ADDRESS=<Deploy 済みの ERC20 token address>
+
+SLACK_CLIENT_ID=
+SLACK_CLIENT_SECRET=
+SLACK_VERIFICATION_TOKEN=
 ```
 
 ここで指定した `SERVER_ACCOUNT_ADDRESS` アカウントの保持する ERC20 をユーザーに配布します
@@ -99,7 +102,15 @@ $ sudo sh script/stg/build.sh
 $ sudo sh script/stg/start.sh
 ```
 
-# API
+# Slack との結合
+
+## Slash command
+
+Slack の slash command は `/api/register/` に来るように設定してください
+
+![Slack の設定](/images/slack-token-image1.png)
+
+## Event
 
 T.B.D
 
