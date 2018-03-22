@@ -6,7 +6,7 @@ const controllerAction = require('../controller/action');
 
 router.get('/', controllerIndex.get);
 router.post('/api/register', controllerRegister.post);
-router.post('/api/action', controllerRegister.post);
+router.post('/api/action', controllerAction.post);
 
 module.exports = router;
 
