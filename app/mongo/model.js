@@ -12,8 +12,18 @@ let User = new Schema({
   address: String,
 });
 
-db = mongoose.connect(endpoint);
-let model = mongoose.model('User', User);
+let Reaction = new Schema({
+  id: String,
+  from_user_id: String,
+  to_user_id: String,
+  reaction: String,
+  ts: String,
+});
 
-exports.User = model;
+db = mongoose.connect(endpoint);
+let userModel = mongoose.model('User', User);
+let ReactionModel = mongoose.model('Reaction', Reaction);
+
+exports.User = userModel;
+exports.Reaction = ReactionModel;
 exports.db = db;
