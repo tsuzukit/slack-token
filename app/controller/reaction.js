@@ -10,21 +10,18 @@ let post = async (req, res, next) => {
     return;
   }
 
-  console.log(req.body);
+  if (req.body.event == null) {
+    res.status(200).send({ challenge: req.body.challenge });
+    return;
+  }
 
-  // const fromUserId = req.body.event.user;
-  // const toUserId = req.body.event.item_user;
-  // const reaction = req.body.event.reaction;
-  // const ts = req.body.event.event_ts;
-  //
-  // let result = ReactionService.create(fromUserId, toUserId, reaction, ts);
-  // if (result) {
-  //   res.send({'text': 'Hello `' + userName + '`. `' + address + '` is registered!'});
-  // } else {
-  //   res.status(200).send({ text: 'Oops! Something went wrong!' });
-  // }
+  const fromUserId = req.body.event.user;
+  const toUserId = req.body.event.item_user;
+  const reaction = req.body.event.reaction;
+  const ts = req.body.event.event_ts;
 
-  res.status(200).send({ challenge: req.body.challenge });
+  let result = ReactionService.create(fromUserId, toUserId, reaction, ts);
+  res.status(200).send({});
 
 };
 
