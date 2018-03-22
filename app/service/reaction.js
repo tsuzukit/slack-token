@@ -6,7 +6,7 @@ let ReactionService = function () {};
 
 ReactionService.create = async (fromUserId, toUserId, reaction, ts) => {
   try {
-    let reaction = new Reaction({
+    new Reaction({
       from_user_id: fromUserId,
       to_user_id: toUserId,
       reaction: reaction,
@@ -14,6 +14,7 @@ ReactionService.create = async (fromUserId, toUserId, reaction, ts) => {
     }).save();
     return true;
   } catch (err) {
+    console.log(err);
     return false;
   }
 };
