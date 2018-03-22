@@ -20,11 +20,6 @@ let post = async (req, res, next) => {
   const reaction = req.body.event.reaction;
   const ts = req.body.event.event_ts.toString();
 
-  console.log(fromUserId);
-  console.log(toUserId);
-  console.log(reaction);
-  console.log(ts);
-
   ReactionService.create(fromUserId, toUserId, reaction, ts);
   res.status(200).send({});
 
