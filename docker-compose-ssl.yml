@@ -23,6 +23,16 @@ services:
     links:
       - mongo
 
+  queue:
+    image: slack-token-queue
+    container_name: slack-token-queue
+    build: ./docker/queue
+    volumes:
+      - ./app:/var/app
+    links:
+      - mongo
+      - redis
+
   nginx:
     image: slack-token-nginx
     container_name: slack-token-nginx

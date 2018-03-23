@@ -2,17 +2,47 @@
 
 Slack で reaction をつけてもらった人に ERC20 準拠の Token を付与します。
 
+基本的には [この](https://github.com/kentaro/tiperc20) repository のコンセプトをそのまま nodejs で実装しなおした形です。
+
+ユーザーは slack で自分の発言に reaction がつくと、前もって登録しておいた自分の Ethereum アカウントに ERC20 準拠の Token をもらえます。
+
+Slack チーム内のコミュニケーションを促す目的での導入を想定しています。
+
+# How it works
+
 全体の構成は以下のような形です。
 
 <img src="/images/slack-token-image4.png" width="900">
 
-ERC20 トークンを発行したアカウントの秘密鍵を nodejs のサーバーに環境変数として保管し、Token 付与はそのアカウントから行います。
+## ユーザーの登録
 
-ユーザーは先に slash command を使って metamask や myEtherWallet などのアドレスをシステムに登録しておく必要があります。
+ユーザーの登録は Slack のスラッシュコマンド経由で行います。
 
-# How it works
+```
+/register 0x0000000000000000000000000000000000000000
+```
 
-T.B.D
+の形で自分のアドレスを登録できます。登録されたアドレスと slack の userid は mongodb に保存されます。
+
+## Reaction 発生時の処理
+
+Reaction は Slack の Event API 経由で受け取ります。
+
+Reaction が発生したら、ユーザーの slack userid から上記で登録した ethereum address を取得します。
+
+また、reaction の種類が予め登録されたものかどうかをチェックし、token を送信するための job を作って queue に入れます。
+
+Queue に入った job は 1 つずつ順番に取り出され、token の付与を行う Tx を作って ethereum に投げます。
+
+マスターアカウントの nonce と Tx の nonce があっていないと処理が失敗するため、job queue を利用して処理を 1 つずつに限定しています。
+
+<img src="/images/slack-token-image5.png" width="900">
+
+## ガスの支払い
+
+ERC20 トークンを発行したマスターアカウントの秘密鍵を nodejs のサーバーに環境変数として保管し、Token 付与はそのアカウントから行います。
+
+マスターアカウントが Token 付与のガス代を支払うため、マスターアカウントには Ethereum をディポジットしておく必要があります。
 
 # セットアップ
 

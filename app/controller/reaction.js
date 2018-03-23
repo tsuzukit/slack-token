@@ -1,5 +1,5 @@
 require('dotenv').config();
-const ethereum = require('../util/etherum');
+const queue = require('../util/queue');
 const ReactionService = require('../service/reaction').service;
 const UserService = require('../service/user').service;
 
@@ -10,6 +10,8 @@ let post = async (req, res, next) => {
     res.status(200).send({ text: 'Oops! Something went wrong!' });
     return;
   }
+
+  // TODO channel チェックする
 
   if (req.body.event == null) {
     res.status(200).send({ challenge: req.body.challenge });
@@ -26,7 +28,8 @@ let post = async (req, res, next) => {
     return;
   }
 
-  let reactionModel = await ReactionService.create(fromUserId, toUserId, reaction, ts);
+  const tx = "";
+  let reactionModel = await ReactionService.create(fromUserId, toUserId, reaction, ts, tx);
   if (reactionModel == null) {
     res.status(500).send({});
     return;
@@ -36,22 +39,23 @@ let post = async (req, res, next) => {
   const user = await UserService.findBySlackUserId(toUserId);
   if (user == null) {
     res.status(500).send({});
+
+    // TODO user に ether address を登録するように促す
+
     return;
   }
 
   // 2. check emoji
   const targetEmojis = process.env.EMOJI.split(',');
   const isTarget = process.env.EMOJI === '' || targetEmojis.includes(reaction);
-
-  // 3. invoke worker
-  let txLink = '';
-  if (isTarget) {
-    const result = await ethereum.sendToken('0x' + user.address);
-    if (result != null) {
-      txLink = 'https://rinkeby.etherscan.io/tx/' + result.transactionHash;
-    }
+  if (!isTarget) {
+    res.status(500).send({});
+    return;
   }
-  res.status(200).send({status: 0, tx: txLink});
+
+  // 3. enqueu job to worker
+  queue.enqueue(user.address, reactionModel._id);
+  res.status(200).send({});
 };
 
 exports.post = post;
