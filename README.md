@@ -112,5 +112,10 @@ Slack の slash command は `/api/register/` に来るように設定してく�
 
 ## Event
 
-T.B.D
+Event は [reaction_added](https://api.slack.com/events/reaction_added) を購読してください
+
+Slack の管理画面メニューの `Event Sbuscriptions` を選択して、Event 送信先の Request URL を指定します。
+`Add Workspace Event` ボタンから `reaction_added` を追加してください。
+
+<img src="/images/slack-token-image2.png" width="300">
 

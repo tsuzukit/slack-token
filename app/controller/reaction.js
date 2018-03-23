@@ -19,8 +19,13 @@ let post = async (req, res, next) => {
   const toUserId = req.body.event.item_user;
   const reaction = req.body.event.reaction;
   const ts = req.body.event.event_ts.toString();
-
   ReactionService.create(fromUserId, toUserId, reaction, ts);
+
+  // TODO
+  // 1. find user
+  // 2. check emoji
+  // 3. invoke worker
+
   res.status(200).send({});
 
 };
