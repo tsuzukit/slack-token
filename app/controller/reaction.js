@@ -5,14 +5,6 @@ const UserService = require('../service/user').service;
 
 let post = async (req, res, next) => {
 
-  const verificationToken = process.env.SLACK_VERIFICATION_TOKEN;
-  if (req.body.token !== verificationToken) {
-    res.status(200).send({ text: 'Oops! Something went wrong!' });
-    return;
-  }
-
-  // TODO channel チェックする
-
   if (req.body.event == null) {
     res.status(200).send({ challenge: req.body.challenge });
     return;
@@ -38,10 +30,8 @@ let post = async (req, res, next) => {
   // 1. find user
   const user = await UserService.findBySlackUserId(toUserId);
   if (user == null) {
-    res.status(500).send({});
-
     // TODO user に ether address を登録するように促す
-
+    res.status(500).send({});
     return;
   }
 

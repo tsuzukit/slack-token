@@ -70,6 +70,9 @@ SLACK_VERIFICATION_TOKEN=
 
 # カンマ区切りで記載。指定しなければ全てに反応する
 EMOJI=slightly_smiling_face,bug
+
+# カンマ区切りで Slack のチャンネルIDを記載。指定しなければ全てに対応する
+CHANNEL=
 ```
 
 ここで指定した `SERVER_ACCOUNT_ADDRESS` アカウントの保持する ERC20 をユーザーに配布します

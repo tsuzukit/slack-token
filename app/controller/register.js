@@ -4,14 +4,6 @@ const UserService = require('../service/user').service;
 
 let post = async (req, res, next) => {
 
-  const verificationToken = process.env.SLACK_VERIFICATION_TOKEN;
-  if (req.body.token !== verificationToken) {
-    res.status(200).send({ text: 'Oops! Something went wrong!' });
-    return;
-  }
-
-  // TODO channel チェックする
-
   const userId = req.body.user_id;
   const userName = req.body.user_name;
   const address = req.body.text.replace('0x', '');
