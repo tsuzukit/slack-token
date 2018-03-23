@@ -6,5 +6,10 @@ CMDNAME=`basename $0`
 ROOT_DIR=`dirname $0`/..
 cd $ROOT_DIR
 
-docker exec -it slack-token-app npm install
-docker exec -it slack-token-app /bin/ash -c "cd contract && npm install"
+docker-compose -f docker-compose-prepare.yml build
+docker-compose -f docker-compose-prepare.yml up -d
+
+docker exec -it slack-token-prepare npm install
+docker exec -it slack-token-prepare /bin/ash -c "cd contract && npm install"
+
+docker-compose -f docker-compose-prepare.yml down

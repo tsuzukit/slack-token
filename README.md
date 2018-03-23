@@ -77,6 +77,41 @@ CHANNEL=
 
 ここで指定した `SERVER_ACCOUNT_ADDRESS` アカウントの保持する ERC20 をユーザーに配布します
 
+## 独自 ERC20 トークンの定義
+
+`app/contract/contracts/CustomToken.sol` の変数を修正してください
+
+```
+string public name = "Token の名前";
+string public symbol = "TICKER";
+uint8 public decimals = 18; // Token の最小単位 
+uint256 initialSupply = 10000e18; // 初期発行量 (1 = 最小単位なのでこの場合 10000 token の発行になる) 
+```
+
+### コントラクトのテスト
+
+`ganache-cli` を利用して、実際に ethereum の network にはコントラクトを deploy せずにテストを行います
+
+```bash
+$ sh script/contract/test.sh
+```
+
+### コントラクトの Deploy
+
+環境ファイルで設定した INFURA の向先によって、どのネットワークに deploy されるかが決まります
+
+```bash
+$ sh script/contract/deploy.sh
+```
+
+Deploy されたら、環境ファイルにコントラクトアドレスを記載してください。
+
+## 依存関係のあるライブラリのインストール (初回のみ)
+
+```bash
+$ sh script/prepare.sh
+```
+
 ## イメージのビルド
 
 ```bash
@@ -95,39 +130,6 @@ $ sh script/dev/start.sh
 
 # 本番環境 では ssl を使う関係上、下記コマンドを利用
 $ sh script/stg/start.sh
-```
-
-## 依存関係のあるライブラリのインストール (初回のみ)
-
-```bash
-$ sh script/prepare.sh
-```
-
-# 独自 ERC20 トークンの定義
-
-`app/contract/contracts/CustomToken.sol` の変数を修正してください
-
-```
-string public name = "Token の名前";
-string public symbol = "TICKER";
-uint8 public decimals = 18; // Token の最小単位 
-uint256 initialSupply = 10000e18; // 初期発行量 (1 = 最小単位なのでこの場合 10000 token の発行になる) 
-```
-
-# コントラクトのテスト
-
-`ganache-cli` を利用して、実際に ethereum の network にはコントラクトを deploy せずにテストを行います
-
-```bash
-$ sh script/contract/test.sh
-```
-
-# コントラクトの Deploy
-
-環境ファイルで設定した INFURA の向先によって、どのネットワークに deploy されるかが決まります
-
-```bash
-$ sh script/contract/deploy.sh
 ```
 
 # 本番環境に Deploy

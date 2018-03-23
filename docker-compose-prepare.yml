@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+
+  app:
+    image: slack-token-prepare
+    container_name: slack-token-prepare
+    build: ./docker/prepare
+    volumes:
+      - ./app:/var/app
+
