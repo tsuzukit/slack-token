@@ -4,7 +4,7 @@ Slack で reaction をつけてもらった人に ERC20 準拠の Token を付�
 
 全体の構成は以下のような形です。
 
-<img src="/images/slack-token-image4.png" width="600">
+<img src="/images/slack-token-image4.png" width="900">
 
 ERC20 トークンを発行したアカウントの秘密鍵を nodejs のサーバーに環境変数として保管し、Token 付与はそのアカウントから行います。
 
