@@ -1,6 +1,14 @@
 # Concept
 
-T.B.D
+Slack で reaction をつけてもらった人に ERC20 準拠の Token を付与します。
+
+全体の構成は以下のような形です。
+
+<img src="/images/slack-token-image4.png" width="600">
+
+ERC20 トークンを発行したアカウントの秘密鍵を nodejs のサーバーに環境変数として保管し、Token 付与はそのアカウントから行います。
+
+ユーザーは先に slash command を使って metamask や myEtherWallet などのアドレスをシステムに登録しておく必要があります。
 
 # How it works
 
