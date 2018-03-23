@@ -4,18 +4,18 @@ require('dotenv').config();
 
 let ReactionService = function () {};
 
-ReactionService.create = async (fromUserId, toUserId, reaction, ts) => {
+ReactionService.create = async (fromUserId, toUserId, reaction, ts, tx) => {
   try {
-    new Reaction({
+    return await new Reaction({
       from_user_id: fromUserId,
       to_user_id: toUserId,
       reaction: reaction,
       ts: ts,
+      tx: tx
     }).save();
-    return true;
   } catch (err) {
     console.log(err);
-    return false;
+    return null;
   }
 };
 

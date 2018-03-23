@@ -9,6 +9,11 @@ services:
     volumes:
       - ./data/mongo:/data/db
 
+  redis:
+      image: slack-token-redis
+      container_name: slack-token-redis
+      build: ./docker/redis
+
   app:
     image: slack-token-app
     container_name: slack-token-app
@@ -17,6 +22,7 @@ services:
       - ./app:/var/app
     links:
       - mongo
+      - redis
 
   nginx:
     image: slack-token-nginx

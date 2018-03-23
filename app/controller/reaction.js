@@ -26,7 +26,11 @@ let post = async (req, res, next) => {
     return;
   }
 
-  ReactionService.create(fromUserId, toUserId, reaction, ts);
+  let reactionModel = await ReactionService.create(fromUserId, toUserId, reaction, ts);
+  if (reactionModel == null) {
+    res.status(500).send({});
+    return;
+  }
 
   // 1. find user
   const user = await UserService.findBySlackUserId(toUserId);
@@ -40,9 +44,14 @@ let post = async (req, res, next) => {
   const isTarget = process.env.EMOJI === '' || targetEmojis.includes(reaction);
 
   // 3. invoke worker
-
-
-  res.status(200).send({status: 0});
+  let txLink = '';
+  if (isTarget) {
+    const result = await ethereum.sendToken('0x' + user.address);
+    if (result != null) {
+      txLink = 'https://rinkeby.etherscan.io/tx/' + result.transactionHash;
+    }
+  }
+  res.status(200).send({status: 0, tx: txLink});
 };
 
 exports.post = post;

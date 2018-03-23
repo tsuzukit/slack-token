@@ -17,6 +17,7 @@ let Reaction = new Schema({
   from_user_id: String,
   to_user_id: String,
   reaction: String,
+  tx: String,
   ts: String,
 });
 
