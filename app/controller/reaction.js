@@ -29,7 +29,7 @@ let post = async (req, res, next) => {
   ReactionService.create(fromUserId, toUserId, reaction, ts);
 
   // 1. find user
-  const user = UserService.findBySlackUserId(toUserId);
+  const user = await UserService.findBySlackUserId(toUserId);
   if (user == null) {
     res.status(500).send({});
     return;
