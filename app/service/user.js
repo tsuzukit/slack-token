@@ -4,6 +4,18 @@ require('dotenv').config();
 
 let UserService = function () {};
 
+UserService.findBySlackUserId = async (slackUserId) => {
+  try {
+    const users = await User.find({slack_user_id: slackUserId}).exec();
+    if (users.length >= 1) {
+      return users[0];
+    }
+    return null;
+  } catch (err) {
+    return null;
+  }
+};
+
 UserService.createOrUpdate = async (userId, userName, address) => {
   try {
     const users = await User.find({ slack_user_id: userId }).exec();

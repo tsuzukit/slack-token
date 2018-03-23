@@ -3,9 +3,7 @@ let Contract = model.Contract;
 
 let get = async (req, res, next) => {
 
-  res.send({
-    'status': 1
-  });
+  res.send({status: 0});
 
 };
 

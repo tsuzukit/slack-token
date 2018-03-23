@@ -29,6 +29,9 @@ CONTRACT_ADDRESS=<Deploy 済みの ERC20 token address>
 SLACK_CLIENT_ID=
 SLACK_CLIENT_SECRET=
 SLACK_VERIFICATION_TOKEN=
+
+# カンマ区切りで記載。指定しなければ全てに反応する
+EMOJI=slightly_smiling_face,bug
 ```
 
 ここで指定した `SERVER_ACCOUNT_ADDRESS` アカウントの保持する ERC20 をユーザーに配布します
