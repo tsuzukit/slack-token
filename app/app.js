@@ -6,6 +6,7 @@ const route = require('./routes/index');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
+app.use(express.static(__dirname + '/public'));
 app.use('/', route);
 
 const server = app.listen(3000, async () => {
