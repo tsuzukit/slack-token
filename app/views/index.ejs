@@ -56,18 +56,18 @@
     </div>
     <div class="row">
       <div class="col-md-4 col-sm-4 wow fadeInDown" data-wow-delay="200ms">
-        <div class="achievement-box"> <span class="count">10</span>
+        <div class="achievement-box"> <span class="count"><%= num_users %></span>
           <h4>Users</h4>
         </div>
       </div>
       <div class="col-md-4 col-sm-4 wow fadeInDown" data-wow-delay="400ms">
-        <div class="achievement-box"> <span class="count">120</span>
+        <div class="achievement-box"> <span class="count"><%= num_reactions %></span>
           <h4>Reactions</h4>
         </div>
       </div>
       <div class="col-md-4 col-sm-4 wow fadeInDown" data-wow-delay="600ms">
-        <div class="achievement-box"> <span class="count">120</span>
-          <h4>Tokens on user's wallet</h4>
+        <div class="achievement-box"> <span class="count"><%= num_tokens_left %></span>
+          <h4>Tokens still left</h4>
         </div>
       </div>
     </div>
@@ -85,34 +85,24 @@
 
         <ul class="timeline">
 
-          <li class="timeline-inverted">
-            <div class="timeline-image">
-              <h4>&#x1f600;</h4>
-            </div>
-            <div class="timeline-panel">
-              <div class="timeline-heading">
-                <h4>To</h4>
-                <h4 class="subheading">0x4F66950F852642a1487C21D82128a512a44D17d0</h4>
+          <% completed_transactions.forEach(function (value, key) { %>
+
+            <li class="timeline-inverted">
+              <div class="timeline-image">
+                <h4><%= value.reaction %></h4>
               </div>
-              <div class="timeline-body">
-                <a href="https://rinkeby.etherscan.io/tx/0xc60c74bc39ca9cd711b80df24e028fbb1188bc47e18b6421b346d7096e224438" target="_bkank">https://rinkeby.etherscan.io/tx/0xc60c74bc39ca9cd711b80df24e028fbb1188bc47e18b6421b346d7096e224438</a>
+              <div class="timeline-panel">
+                <div class="timeline-heading">
+                  <h4>From: <%= value.from_address %> </h4>
+                  <h4 class="subheading">To: <%= value.to_address %></h4>
+                </div>
+                <div class="timeline-body">
+                  <a href="https://rinkeby.etherscan.io/tx/ <%= value.tx %>" target="_bkank">Tx hash: <%= value.tx %></a>
+                </div>
               </div>
-            </div>
-          </li>
-          <li class="timeline-inverted">
-            <div class="timeline-image">
-              <h4>&#x1f600;</h4>
-            </div>
-            <div class="timeline-panel">
-              <div class="timeline-heading">
-                <h4>To</h4>
-                <h4 class="subheading">0x4F66950F852642a1487C21D82128a512a44D17d0</h4>
-              </div>
-              <div class="timeline-body">
-                <a href="https://rinkeby.etherscan.io/tx/0xc60c74bc39ca9cd711b80df24e028fbb1188bc47e18b6421b346d7096e224438" target="_bkank">https://rinkeby.etherscan.io/tx/0xc60c74bc39ca9cd711b80df24e028fbb1188bc47e18b6421b346d7096e224438</a>
-              </div>
-            </div>
-          </li>
+            </li>
+
+          <% }); %>
 
         </ul>
 
@@ -121,27 +111,31 @@
   </div>
   <div class="container">
     <div class="section-title center">
-      <h2>Waiting Transactions</h2>
+      <h2>Processing Transactions</h2>
       <hr>
     </div>
     <div class="row">
       <div class="col-lg-12">
         <ul class="timeline">
 
-          <li class="timeline-inverted">
-            <div class="timeline-image">
-              <h4>&#x1f602;</h4>
-            </div>
-            <div class="timeline-panel">
-              <div class="timeline-heading">
-                <h4>To</h4>
-                <h4 class="subheading">0x4F66950F852642a1487C21D82128a512a44D17d0</h4>
-              </div>
-              <div class="timeline-body">
-                Tx hash T.B.D
-              </div>
-            </div>
-          </li>
+            <% processing_transactions.forEach(function (value, key) { %>
+
+              <li class="timeline-inverted">
+                <div class="timeline-image">
+                  <h4><%= value.reaction %></h4>
+                </div>
+                <div class="timeline-panel">
+                  <div class="timeline-heading">
+                    <h4>From: <%= value.from_address %> </h4>
+                    <h4 class="subheading">To: <%= value.to_address %></h4>
+                  </div>
+                  <div class="timeline-body">
+                    Tx hash: T.B.D
+                  </div>
+                </div>
+              </li>
+
+            <% }); %>
 
         </ul>
       </div>

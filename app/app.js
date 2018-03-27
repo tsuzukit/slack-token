@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const route = require('./routes/index');
 
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 

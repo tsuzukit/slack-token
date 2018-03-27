@@ -14,7 +14,7 @@ queue.process('transfer', async (job, done) => {
   console.log('Processing job ' + job.id);
   const result = await ethereum.sendToken('0x' + job.data.to);
   if (result != null) {
-    const tx = 'https://rinkeby.etherscan.io/tx/' + result.transactionHash;
+    const tx = result.transactionHash;
     await reactionService.findByIdAndUpdateTx(job.data.reactionId, tx);
   }
   console.log('Job ' + job.id + ' is complete. Now wait or some time to grant another token');
