@@ -15,12 +15,12 @@ let get = async (req, res, next) => {
 
   let completedTransactions = await ReactionService.findCompleted();
   completedTransactions.forEach(function (value, key){
-    value.reaction = '&#x' + Emoji[value.reaction];
+    value.reaction = Emoji[value.reaction];
     value.tx_link = process.env.ETHERESCAN_URL + '/tx/' + value.tx;
   });
   let processingTransactions = await ReactionService.findProcessing();
   processingTransactions.forEach(function (value, key){
-    value.reaction = '&#x' + Emoji[value.reaction];
+    value.reaction = Emoji[value.reaction];
   });
 
   let numCompletedTransactions = await ReactionService.countCompleted();
