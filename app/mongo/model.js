@@ -15,7 +15,9 @@ let User = new Schema({
 let Reaction = new Schema({
   id: String,
   from_user_id: String,
+  from_address: String,
   to_user_id: String,
+  to_address: String,
   reaction: String,
   tx: String,
   ts: String,

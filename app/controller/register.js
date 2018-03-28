@@ -1,5 +1,5 @@
 require('dotenv').config();
-const ethereum = require('../util/etherum');
+const Ethereum = require('../util/etherum');
 const UserService = require('../service/user').service;
 
 let post = async (req, res, next) => {
@@ -11,7 +11,7 @@ let post = async (req, res, next) => {
     res.status(200).send({ text: 'Hello `' + userName + '`. Please specify ethereum address!' });
     return;
   }
-  if (!ethereum.isAddress(address)) {
+  if (!Ethereum.isAddress(address)) {
     res.status(200).send({ text: 'Hello `' + userName + '`. `' + address + '` is not valid ethereum address!' });
     return;
   }

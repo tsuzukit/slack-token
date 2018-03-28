@@ -37,5 +37,13 @@ UserService.createOrUpdate = async (userId, userName, address) => {
   }
 };
 
+UserService.count = async () => {
+  try {
+    return await User.count();
+  } catch (err) {
+    return 0;
+  }
+};
+
 exports.service = UserService;
 

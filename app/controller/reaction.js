@@ -43,7 +43,13 @@ let post = async (req, res, next) => {
     return;
   }
 
-  // 3. enqueu job to worker
+  // 3. save sending address
+  const fromUser = await UserService.findBySlackUserId(fromUserId);
+  reactionModel.to_address = user.address;
+  reactionModel.from_address = fromUser != null ? fromUser.address : null;
+  reactionModel.save();
+
+  // 4. enqueu job to worker
   queue.enqueue(user.address, reactionModel._id);
   res.status(200).send({});
 };

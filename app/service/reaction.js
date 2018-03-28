@@ -34,5 +34,53 @@ ReactionService.findByIdAndUpdateTx = async (id, tx) => {
   }
 };
 
+ReactionService.findCompleted = async () => {
+  try {
+    return await Reaction.find( { tx: { $ne: "" }} ).sort([['ts', -1]]).limit(20).exec();
+  } catch (err) {
+    return [];
+  }
+};
+
+ReactionService.countCompleted = async () => {
+  try {
+    return await Reaction.count( { tx: { $ne: "" }} );
+  } catch (err) {
+    return [];
+  }
+};
+
+ReactionService.findProcessing = async () => {
+  try {
+    return await Reaction.find( { tx: "" } ).sort([['ts', -1]]).limit(20).exec();
+  } catch (err) {
+    return [];
+  }
+};
+
+ReactionService.countProcessing = async () => {
+  try {
+    return await Reaction.count( { tx: "" } );
+  } catch (err) {
+    return [];
+  }
+};
+
+ReactionService.count = async () => {
+  try {
+    return await Reaction.count();
+  } catch (err) {
+    return 0;
+  }
+};
+
+ReactionService.countTx = async () => {
+  try {
+    return await Reaction.count({ tx: { $ne: "" } });
+  } catch (err) {
+    return 0;
+  }
+};
+
 exports.service = ReactionService;
 

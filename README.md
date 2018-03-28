@@ -59,6 +59,7 @@ MONGO_DATABASE=slack-token
 
 SALT=
 
+ETHERESCAN_URL=https://<main 以外の場合はネットワーク名>.etherscan.io/
 INFURA_ENDPOINT=https://rinkeby.infura.io/<Access Token>
 SERVER_ACCOUNT_ADDRESS=<Ether account address>
 SERVER_ACCOUNT_PRIVATE_KEY=<Ether account private key>
