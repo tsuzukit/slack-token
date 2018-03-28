@@ -1,6 +1,6 @@
 let kue = require('kue');
 const sleep = require('sleep');
-const ethereum = require('./util/etherum');
+const Ethereum = require('./util/etherum');
 const reactionService = require('./service/reaction').service;
 
 let queue = kue.createQueue({
@@ -12,7 +12,7 @@ let queue = kue.createQueue({
 
 queue.process('transfer', async (job, done) => {
   console.log('Processing job ' + job.id);
-  const result = await ethereum.sendToken('0x' + job.data.to);
+  const result = await Ethereum.sendToken('0x' + job.data.to);
   if (result != null) {
     const tx = result.transactionHash;
     await reactionService.findByIdAndUpdateTx(job.data.reactionId, tx);

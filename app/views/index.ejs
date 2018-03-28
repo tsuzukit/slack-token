@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Suki-Suki-Dan</title>
+<title>Slack-Token</title>
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -40,8 +40,9 @@
     <div class="container">
       <div class="row">
         <div class="intro-text">
-          <h1>Suki-Suki-Dan</h1>
+          <h1>Slack-Token</h1>
           <p>Blockchain & Incentivization</p>
+          <a href="<%= contract_url %>" target="_blank" class="btn btn-default btn-lg page-scroll">Checkout Token</a>
       </div>
     </div>
   </div>
@@ -77,7 +78,7 @@
 <div id="resume" class="text-center">
   <div class="container">
     <div class="section-title center">
-      <h2>Transactions</h2>
+      <h2>Confirmed Transactions (<%= num_completed_transactions %>)</h2>
       <hr>
     </div>
     <div class="row">
@@ -89,15 +90,16 @@
 
             <li class="timeline-inverted">
               <div class="timeline-image">
-                <h4><%= value.reaction %></h4>
+                <h4><%- value.reaction %></h4>
               </div>
               <div class="timeline-panel">
                 <div class="timeline-heading">
-                  <h4>From: <%= value.from_address %> </h4>
+                  <h4 class="subheading">From: <%= value.from_address %> </h4>
                   <h4 class="subheading">To: <%= value.to_address %></h4>
                 </div>
                 <div class="timeline-body">
-                  <a href="https://rinkeby.etherscan.io/tx/ <%= value.tx %>" target="_bkank">Tx hash: <%= value.tx %></a>
+                  Tx hash: <a href="<%= value.tx_link %>" target="_bkank"><%= value.tx %></a>
+                  <p>At: <%= new Date(value.ts * 1000).toLocaleString() %></p>
                 </div>
               </div>
             </li>
@@ -111,7 +113,7 @@
   </div>
   <div class="container">
     <div class="section-title center">
-      <h2>Processing Transactions</h2>
+      <h2>Processing Transactions (<%= num_processing_transactions %>)</h2>
       <hr>
     </div>
     <div class="row">
@@ -122,15 +124,16 @@
 
               <li class="timeline-inverted">
                 <div class="timeline-image">
-                  <h4><%= value.reaction %></h4>
+                  <h4><%- value.reaction %></h4>
                 </div>
                 <div class="timeline-panel">
                   <div class="timeline-heading">
-                    <h4>From: <%= value.from_address %> </h4>
+                    <h4 class="subheading">From: <%= value.from_address %> </h4>
                     <h4 class="subheading">To: <%= value.to_address %></h4>
                   </div>
                   <div class="timeline-body">
-                    Tx hash: T.B.D
+                    Tx hash: <p>T.B.D</p>
+                    <p>At: <%= new Date(value.ts * 1000).toLocaleString() %></p>
                   </div>
                 </div>
               </li>
@@ -146,7 +149,7 @@
 <div id="footer">
   <div class="container text-center">
     <div class="fnav">
-      <p>Copyright &copy; 2018 Blockchain Suki-Suki-Dan </p>
+      <p>Copyright &copy; 2018 SSD </p>
     </div>
   </div>
 </div>

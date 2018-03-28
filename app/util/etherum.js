@@ -13,6 +13,11 @@ exports.isAddress = (text) => {
   return regex.test(row);
 };
 
+exports.getBalanceOfOwner = async () => {
+  const address = process.env.SERVER_ACCOUNT_ADDRESS;
+  return await contract.methods.balanceOf(address).call();
+};
+
 exports.sendToken = async (to) => {
   const address = process.env.SERVER_ACCOUNT_ADDRESS;
   const privateKey = process.env.SERVER_ACCOUNT_PRIVATE_KEY;

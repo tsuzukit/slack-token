@@ -410,7 +410,7 @@ ol.type li a:hover {
 	background: #f6f6f6;
 }
 .timeline {
-	height: 100px;
+	height: 400px;
 	overflow-y: scroll;
 	position: relative;
 	padding: 0;
@@ -501,7 +501,7 @@ ol.type li a:hover {
 .timeline .timeline-heading h4.subheading {
 	text-transform: none;
 	color: #629ca7;
-	font-size: 20px;
+	font-size: 18px;
 }
 .timeline .timeline-body>p, .timeline .timeline-body>ul {
 	margin-bottom: 0;
