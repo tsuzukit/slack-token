@@ -40,10 +40,9 @@ services:
     volumes:
       - ./fullchain.pem:/etc/letsencrypt/fullchain.pem
       - ./privkey.pem:/etc/letsencrypt/privkey.pem
+      - ./app/public:/var/www/html/public
     ports:
       - "80:80"
       - "443:443"
     links:
       - app
-    volumes:
-      - ./app/public:/var/www/html/public
