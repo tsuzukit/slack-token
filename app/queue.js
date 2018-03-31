@@ -10,20 +10,36 @@ let queue = kue.createQueue({
   }
 });
 
-queue.process('transfer', async (job, done) => {
+queue.process('transfer', async (job, ctx, done) => {
+
   console.log('Processing job ' + job.id);
-  const result = await Ethereum.sendToken('0x' + job.data.to);
-  if (result != null) {
-    const tx = result.transactionHash;
-    await reactionService.findByIdAndUpdateTx(job.data.reactionId, tx);
+  let tx = null;
+  await Ethereum.sendToken('0x' + job.data.to, async (hash) => {
+    tx = hash;
+    await reactionService.findByIdAndUpdateTx(job.data.reactionId, hash);
+    console.log('Tx is issued');
+  });
+
+  // check receipt and mark success
+  let waitCount = 0;
+  let result = null;
+  while (result == null && waitCount <= 120) {
+    console.log('Checking receipt...' + waitCount);
+    if (tx != null) {
+      result = await Ethereum.getReceipt(tx);
+    }
+    waitCount += 1;
+    sleep.sleep(1);
   }
-  console.log('Job ' + job.id + ' is complete. Now wait or some time to grant another token');
-
-  // wait some time before invoking another transaction. Otherwise nonce will not match and transaction will fail.
-  // TODO fix me
-  const waitTime = 120; // sec
-  sleep.sleep(waitTime); // sec
-
-  console.log('Waiting is done and now ready for new job.\n');
+  if (result != null) {
+    console.log('Result found!');
+    reactionService.updateStatusToComplete(job.data.reactionId,
+      result.blockHash,
+      result.blockNumber,
+      result.cumulativeGasUsed,
+      result.gasUsed);
+  } else {
+    console.log('Result not found!');
+  }
   done();
 });

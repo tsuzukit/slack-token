@@ -18,7 +18,7 @@ exports.getBalanceOfOwner = async () => {
   return await contract.methods.balanceOf(address).call();
 };
 
-exports.sendToken = async (to) => {
+exports.sendToken = async (to, onTx) => {
   const address = process.env.SERVER_ACCOUNT_ADDRESS;
   const privateKey = process.env.SERVER_ACCOUNT_PRIVATE_KEY;
   const encodedData = contract.methods.transfer(to, "1000000000000000000").encodeABI();
@@ -32,11 +32,17 @@ exports.sendToken = async (to) => {
 
   try {
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionObject, privateKey);
-    return await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+    return await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction).on('transactionHash', function(hash){
+      onTx(hash);
+    });
   }
   catch (err) {
     console.log(err);
     return null;
   }
 
+};
+
+exports.getReceipt = async (tx) => {
+  return await web3.eth.getTransactionReceipt(tx);
 };
