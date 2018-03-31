@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Emoji = require('../util/emoji').emoji;
 const UserService = require('../service/user').service;
+const EmojiService = require('../service/emoji').service;
 const ReactionService = require('../service/reaction').service;
 const Ethereum = require('../util/etherum');
 
@@ -14,18 +15,18 @@ let get = async (req, res, next) => {
   let numReactions = await ReactionService.count();
 
   let completeTransactions = await ReactionService.findComplete();
-  completeTransactions.forEach(function (value, key){
-    value.reaction = Emoji[value.reaction];
+  completeTransactions.forEach(async (value, key) => {
+    value.reaction = await EmojiService.getCodeOrUrl(value.reaction);
     value.tx_link = process.env.ETHERESCAN_URL + '/tx/' + value.tx;
   });
   let processingTransactions = await ReactionService.findProcessing();
-  processingTransactions.forEach(function (value, key){
-    value.reaction = Emoji[value.reaction];
+  processingTransactions.forEach(async (value, key) => {
+    value.reaction = await EmojiService.getCodeOrUrl(value.reaction);
     value.tx_link = process.env.ETHERESCAN_URL + '/tx/' + value.tx;
   });
   let inQueueTransactions = await ReactionService.findInQueue();
-  inQueueTransactions.forEach(function (value, key){
-    value.reaction = Emoji[value.reaction];
+  inQueueTransactions.forEach(async (value, key) => {
+    value.reaction = await EmojiService.getCodeOrUrl(value.reaction);
   });
 
   let numCompleteTransactions = await ReactionService.countComplete();

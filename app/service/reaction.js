@@ -57,7 +57,7 @@ ReactionService.updateStatusToComplete = async (id, blockHash, blockNumber, cumu
 
 ReactionService.findComplete = async () => {
   try {
-    return await Reaction.find( { status: 'complete' } ).sort([['ts', -1]]).limit(20).exec();
+    return await Reaction.find( { status: 'complete' } ).sort([['ts', -1]]).limit(40).exec();
   } catch (err) {
     return [];
   }
