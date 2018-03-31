@@ -91,7 +91,12 @@
 
             <li class="timeline-inverted">
               <div class="timeline-image">
-                <h4><%- value.reaction %></h4>
+                  <% if (value.reaction.startsWith('&#x')) { %>
+                    <h4><%- value.reaction %></h4>
+                  <% } %>
+                  <% if (value.reaction.startsWith('http')) { %>
+                    <img src="<%- value.reaction %>">
+                  <% } %>
               </div>
               <div class="timeline-panel">
                 <div class="timeline-heading">
@@ -127,7 +132,12 @@
 
           <li class="timeline-inverted">
             <div class="timeline-image">
-              <h4><%- value.reaction %></h4>
+              <% if (value.reaction.startsWith('&#x')) { %>
+                <h4><%- value.reaction %></h4>
+              <% } %>
+              <% if (value.reaction.startsWith('http')) { %>
+                <img src="<%- value.reaction %>">
+              <% } %>
             </div>
             <div class="timeline-panel">
               <div class="timeline-heading">
@@ -162,7 +172,12 @@
 
               <li class="timeline-inverted">
                 <div class="timeline-image">
-                  <h4><%- value.reaction %></h4>
+                  <% if (value.reaction.startsWith('&#x')) { %>
+                    <h4><%- value.reaction %></h4>
+                  <% } %>
+                  <% if (value.reaction.startsWith('http')) { %>
+                    <img src="<%- value.reaction %>">
+                  <% } %>
                 </div>
                 <div class="timeline-panel">
                   <div class="timeline-heading">

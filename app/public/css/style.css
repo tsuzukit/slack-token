@@ -720,6 +720,10 @@ header .intro-text {
 	height: 100px;
 	margin-left: -75px;
 }
+.timeline-image>img {
+	width: 40px;
+	margin-top: 26px;
+}
 .timeline>li .timeline-image h4 {
 	font-size: 40px;
 	margin-top: 40px;

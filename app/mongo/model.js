@@ -28,10 +28,20 @@ let Reaction = new Schema({
   ts: String,
 });
 
+let Emoji = new Schema({
+  id: String,
+  name: String,
+  code: String,
+  url: String,
+  alias: String,
+});
+
 db = mongoose.connect(endpoint);
 let userModel = mongoose.model('User', User);
 let ReactionModel = mongoose.model('Reaction', Reaction);
+let emojiModel = mongoose.model('Emoji', Emoji);
 
 exports.User = userModel;
 exports.Reaction = ReactionModel;
+exports.Emoji = emojiModel;
 exports.db = db;
