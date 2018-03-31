@@ -20,6 +20,11 @@ let Reaction = new Schema({
   to_address: String,
   reaction: String,
   tx: String,
+  status: String,
+  blockHash: String,
+  blockNumber: String,
+  cumulativeGasUsed: String,
+  gasUsed: String,
   ts: String,
 });
 

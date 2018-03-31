@@ -11,7 +11,8 @@ ReactionService.create = async (fromUserId, toUserId, reaction, ts, tx) => {
       to_user_id: toUserId,
       reaction: reaction,
       ts: ts,
-      tx: tx
+      tx: tx,
+      status: 'in_queue',
     }).save();
   } catch (err) {
     console.log(err);
@@ -25,6 +26,26 @@ ReactionService.findByIdAndUpdateTx = async (id, tx) => {
     if (reactions.length >= 1) {
       let reaction = reactions[0];
       reaction.tx = tx;
+      reaction.status = 'processing';
+      reaction.save();
+      return true;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+}
+;
+ReactionService.updateStatusToComplete = async (id, blockHash, blockNumber, cumulativeGasUsed, gasUsed) => {
+  try {
+    const reactions = await Reaction.find({_id: id}).exec();
+    if (reactions.length >= 1) {
+      let reaction = reactions[0];
+      reaction.status = 'complete';
+      reaction.blockHash = blockHash;
+      reaction.blockNumber = blockNumber;
+      reaction.cumulativeGasUsed = cumulativeGasUsed;
+      reaction.gasUsed = gasUsed;
       reaction.save();
       return true;
     }
@@ -34,17 +55,17 @@ ReactionService.findByIdAndUpdateTx = async (id, tx) => {
   }
 };
 
-ReactionService.findCompleted = async () => {
+ReactionService.findComplete = async () => {
   try {
-    return await Reaction.find( { tx: { $ne: "" }} ).sort([['ts', -1]]).limit(20).exec();
+    return await Reaction.find( { status: 'complete' } ).sort([['ts', -1]]).limit(20).exec();
   } catch (err) {
     return [];
   }
 };
 
-ReactionService.countCompleted = async () => {
+ReactionService.countComplete = async () => {
   try {
-    return await Reaction.count( { tx: { $ne: "" }} );
+    return await Reaction.count( { status: 'complete' } );
   } catch (err) {
     return [];
   }
@@ -52,7 +73,7 @@ ReactionService.countCompleted = async () => {
 
 ReactionService.findProcessing = async () => {
   try {
-    return await Reaction.find( { tx: "" } ).sort([['ts', -1]]).limit(20).exec();
+    return await Reaction.find( { status: 'processing' } ).sort([['ts', -1]]).limit(20).exec();
   } catch (err) {
     return [];
   }
@@ -60,11 +81,28 @@ ReactionService.findProcessing = async () => {
 
 ReactionService.countProcessing = async () => {
   try {
-    return await Reaction.count( { tx: "" } );
+    return await Reaction.count( { status: 'processing' } );
   } catch (err) {
     return [];
   }
 };
+
+ReactionService.findInQueue = async () => {
+  try {
+    return await Reaction.find( { status: 'in_queue' } ).sort([['ts', -1]]).limit(20).exec();
+  } catch (err) {
+    return [];
+  }
+};
+
+ReactionService.countInQueue = async () => {
+  try {
+    return await Reaction.count( { status: 'in_queue' } );
+  } catch (err) {
+    return [];
+  }
+};
+
 
 ReactionService.count = async () => {
   try {

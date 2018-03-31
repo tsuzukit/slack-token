@@ -416,6 +416,9 @@ ol.type li a:hover {
 	padding: 0;
 	list-style: none;
 }
+.timeline.processing {
+	height: 200px;
+}
 .timeline:before {
 	content: "";
 	position: absolute;
