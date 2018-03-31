@@ -38,6 +38,50 @@ Queue に入った job は 1 つずつ順番に取り出され、token の付与
 
 <img src="/images/slack-token-image5.png" width="900">
 
+Queue の処理では、以下の流れで処理を行い、Tx 終了前に次の処理が走るのを(出来るだけ)防ぎます。
+
+```ecmascript 6
+// Kue から呼ばれる関数
+queue.process('transfer', async (job, ctx, done) => {
+
+  let tx = null;
+  // Tx を作って、ether の network に投げ込む
+  await Ethereum.sendToken('0x' + job.data.to, async (hash) => {
+    // Tx は直ぐに作られるので、この Callback は直ぐに呼ばれる
+    // https://web3js.readthedocs.io/en/1.0/web3-eth.html#sendtransaction
+    tx = hash;
+    await reactionService.findByIdAndUpdateTx(job.data.reactionId, hash);
+  });
+
+  // sendToken の結果を await を使って待っているので、ここに来るときには tx の receipt は存在しているハズ
+  // ただし、50 block 以内に mining が完了しない場合は Tx が失敗していなくても receipt がまだ無い場合がある
+  let waitCount = 0;
+  let result = null;
+  // receipt を取得できるか、120 秒経過するまで待つ
+  while (result == null && waitCount <= 120) {
+    if (tx != null) {
+      // Tx から receipt を取得する
+      result = await Ethereum.getReceipt(tx);
+    }
+    waitCount += 1;
+    sleep.sleep(1);
+  }
+  
+  // Timeout (120 秒) せずに結果が取得できれば保存 
+  if (result != null) {
+    reactionService.updateStatusToComplete(job.data.reactionId,
+      result.blockHash,
+      result.blockNumber,
+      result.cumulativeGasUsed,
+      result.gasUsed);
+  }
+  
+  // これにより、次の job が dequeue される
+  done();
+});
+
+```
+
 ## ガスの支払い
 
 ERC20 トークンを発行したマスターアカウントの秘密鍵を nodejs のサーバーに環境変数として保管し、Token 付与はそのアカウントから行います。
@@ -68,6 +112,7 @@ CONTRACT_ADDRESS=<Deploy 済みの ERC20 token address>
 SLACK_CLIENT_ID=
 SLACK_CLIENT_SECRET=
 SLACK_VERIFICATION_TOKEN=
+SLACK_TOKEN=<起動時に emoji.list を叩いてカスタム絵文字を取得するために使う>
 
 # カンマ区切りで記載。指定しなければ全てに反応する
 EMOJI=slightly_smiling_face,bug
@@ -135,7 +180,7 @@ $ sh script/stg/start.sh
 
 # 本番環境に Deploy
 
-Slack で使うために https 化する必要がある (恐らく配布時のみ？) [slack](https://api.slack.com/slash-commands#ssl) より
+Slack App を配布するためには https 化する必要がある (恐らく配布時のみ？) [slack](https://api.slack.com/slash-commands#ssl) 
 
 [Let's encrypt](https://letsencrypt.org/) などで取得した `fullchain.pem` と `privkey.pem` を この repository の root に置いてください (Symbolic link でも問題ありません)
 
@@ -151,13 +196,23 @@ $ sudo sh script/stg/start.sh
 
 # Slack との結合
 
-## Slash command
+## Scope
+
+Slack token を利用するためには以下のスコープの設定が必要です。
+
+- Slash command Scope
+- Reactions Scope
+- Emoji Scope
+
+<img src="/images/slack-token-image7.png" width="500">
+
+### Slash command
 
 Slack の slash command は `/api/register/` に来るように設定してください
 
 <img src="/images/slack-token-image1.png" width="500">
 
-## Event
+### Reaction Event
 
 Event は [reaction_added](https://api.slack.com/events/reaction_added) を購読してください
 
@@ -165,4 +220,12 @@ Slack の管理画面メニューの `Event Sbuscriptions` を選択して、Eve
 `Add Workspace Event` ボタンから `reaction_added` を追加してください。
 
 <img src="/images/slack-token-image2.png" width="500">
+
+### Emoji
+
+カスタム絵文字対応を行うために [emoji.list](https://api.slack.com/methods/emoji.list) API を起動時に呼びます。
+
+API を呼ぶための Token を管理画面から取得して、`.env` の `SLACK_TOKEN` に指定してください。
+
+<img src="/images/slack-token-image6.png" width="500">
 
