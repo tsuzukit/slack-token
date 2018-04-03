@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const route = require('./routes/index');
+const EmojiService = require('./service/emoji').service;
+EmojiService.initialize();
 
 app.set('view engine', 'ejs');
 

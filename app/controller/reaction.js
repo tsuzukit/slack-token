@@ -20,13 +20,6 @@ let post = async (req, res, next) => {
     return;
   }
 
-  const tx = "";
-  let reactionModel = await ReactionService.create(fromUserId, toUserId, reaction, ts, tx);
-  if (reactionModel == null) {
-    res.status(500).send({});
-    return;
-  }
-
   // 1. find user
   const user = await UserService.findBySlackUserId(toUserId);
   if (user == null) {
@@ -39,6 +32,14 @@ let post = async (req, res, next) => {
   const targetEmojis = process.env.EMOJI.split(',');
   const isTarget = process.env.EMOJI === '' || targetEmojis.includes(reaction);
   if (!isTarget) {
+    res.status(500).send({});
+    return;
+  }
+
+  // 3. create model
+  const tx = "";
+  let reactionModel = await ReactionService.create(fromUserId, toUserId, reaction, ts, tx);
+  if (reactionModel == null) {
     res.status(500).send({});
     return;
   }

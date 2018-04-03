@@ -416,6 +416,9 @@ ol.type li a:hover {
 	padding: 0;
 	list-style: none;
 }
+.timeline.processing {
+	height: 200px;
+}
 .timeline:before {
 	content: "";
 	position: absolute;
@@ -716,6 +719,10 @@ header .intro-text {
 	width: 100px;
 	height: 100px;
 	margin-left: -75px;
+}
+.timeline-image>img {
+	width: 40px;
+	margin-top: 26px;
 }
 .timeline>li .timeline-image h4 {
 	font-size: 40px;

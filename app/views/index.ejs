@@ -76,9 +76,10 @@
 </div>
 
 <div id="resume" class="text-center">
+
   <div class="container">
     <div class="section-title center">
-      <h2>Confirmed Transactions (<%= num_completed_transactions %>)</h2>
+      <h2>Confirmed Transactions (<%= num_complete_transactions %>)</h2>
       <hr>
     </div>
     <div class="row">
@@ -86,11 +87,16 @@
 
         <ul class="timeline">
 
-          <% completed_transactions.forEach(function (value, key) { %>
+          <% complete_transactions.forEach(function (value, key) { %>
 
             <li class="timeline-inverted">
               <div class="timeline-image">
-                <h4><%- value.reaction %></h4>
+                  <% if (value.reaction.startsWith('&#x')) { %>
+                    <h4><%- value.reaction %></h4>
+                  <% } %>
+                  <% if (value.reaction.startsWith('http')) { %>
+                    <img src="<%- value.reaction %>">
+                  <% } %>
               </div>
               <div class="timeline-panel">
                 <div class="timeline-heading">
@@ -111,6 +117,7 @@
       </div>
     </div>
   </div>
+
   <div class="container">
     <div class="section-title center">
       <h2>Processing Transactions (<%= num_processing_transactions %>)</h2>
@@ -118,13 +125,59 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <ul class="timeline">
+
+        <ul class="timeline processing">
 
             <% processing_transactions.forEach(function (value, key) { %>
 
+          <li class="timeline-inverted">
+            <div class="timeline-image">
+              <% if (value.reaction.startsWith('&#x')) { %>
+                <h4><%- value.reaction %></h4>
+              <% } %>
+              <% if (value.reaction.startsWith('http')) { %>
+                <img src="<%- value.reaction %>">
+              <% } %>
+            </div>
+            <div class="timeline-panel">
+              <div class="timeline-heading">
+                <h4 class="subheading">From: <%= value.from_address %> </h4>
+                <h4 class="subheading">To: <%= value.to_address %></h4>
+              </div>
+              <div class="timeline-body">
+                Tx hash: <a href="<%= value.tx_link %>" target="_bkank"><%= value.tx %></a>
+                <p>At: <%= new Date(value.ts * 1000).toLocaleString() %></p>
+              </div>
+            </div>
+          </li>
+
+            <% }); %>
+
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section-title center">
+      <h2>In Queue Transactions (<%= num_in_queue_transactions %>)</h2>
+      <hr>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <ul class="timeline">
+
+            <% in_queue_transactions.forEach(function (value, key) { %>
+
               <li class="timeline-inverted">
                 <div class="timeline-image">
-                  <h4><%- value.reaction %></h4>
+                  <% if (value.reaction.startsWith('&#x')) { %>
+                    <h4><%- value.reaction %></h4>
+                  <% } %>
+                  <% if (value.reaction.startsWith('http')) { %>
+                    <img src="<%- value.reaction %>">
+                  <% } %>
                 </div>
                 <div class="timeline-panel">
                   <div class="timeline-heading">
