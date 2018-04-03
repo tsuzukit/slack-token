@@ -7,7 +7,7 @@ const verifier = require('../middleware/verifier');
 
 router.get('/', controllerIndex.get);
 router.post('/api/register', verifier.verifyToken, verifier.verifyChannel, controllerRegister.post);
-router.post('/api/reaction', verifier.verifyToken, verifier.verifyChannel, controllerReaction.post);
+router.post('/api/reaction', verifier.verifyChallenge, verifier.verifyToken, verifier.verifyChannel, controllerReaction.post);
 
 module.exports = router;
 

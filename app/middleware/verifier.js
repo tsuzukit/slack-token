@@ -37,5 +37,15 @@ let verifyChannel = async (req, res, next) => {
   next();
 };
 
+let verifyChallenge = async (req, res, next) => {
+
+  if (req.body.challenge != null) {
+    res.status(200).send({ challenge: req.body.challenge });
+  }
+
+  next();
+};
+
 exports.verifyToken = verifyToken;
 exports.verifyChannel = verifyChannel;
+exports.verifyChallenge = verifyChallenge;
