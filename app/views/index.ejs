@@ -24,6 +24,7 @@
 <link rel="stylesheet" type="text/css" href="css/prettyPhoto.css">
 <link href='http://fonts.googleapis.com/css?family=Lato:400,700,900,300' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300' rel='stylesheet' type='text/css'>
+<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,6 +44,7 @@
           <h1>Slack-Token</h1>
           <p>Blockchain & Incentivization</p>
           <a href="<%= contract_url %>" target="_blank" class="btn btn-default btn-lg page-scroll">Checkout Token</a>
+          <a href="#" class="btn btn-default btn-lg" data-featherlight="#send-token-lightbox" id="send-token-btn" style="display: none">Send Token</a>
         </div>
       </div>
     </div>
@@ -199,6 +201,28 @@
   </div>
 </div>
 
+<div style="display: none">
+  <div class="lightbox" id="send-token-lightbox" style="width: 600px;">
+
+    <p id="send-label"></p>
+
+    <form id="send-token-form">
+      <div class="form-group">
+        <label>Ether address</label>
+        <input type="text" class="form-control" id="ether-address" name="ether-address" placeholder="Enter ether address" required>
+        <small class="form-text text-muted">Ethereum 送信先のアドレスを入力してください</small>
+      </div>
+      <div class="form-group">
+        <label>Amount</label>
+        <input type="text" class="form-control" id="ether-amount" name="ether-amount" placeholder="Amount" required>
+        <small class="form-text text-muted">送信する量を入力してください</small>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+  </div>
+</div>
+
 <div id="footer">
   <div class="container text-center">
     <div class="fnav">
@@ -214,5 +238,48 @@
 <script type="text/javascript" src="js/waypoints.js"></script>
 <script type="text/javascript" src="js/jqBootstrapValidation.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
+<script src="//code.jquery.com/jquery-latest.js"></script>
+<script src="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="js/web3.min.js"></script>
+
+<script>
+
+  let web3 = null;
+  let isOnRinkeby = false;
+  let address = '';
+  if (typeof window !== 'undefined' && window.web3 !== 'undefined') {
+    // we are in the browesr and metamask is running.
+    // then hijack web3 only using provider.
+    web3 = new Web3(window.web3.currentProvider);
+    isOnRinkeby = web3.currentProvider.publicConfigStore._state.networkVersion == 4
+      && web3.currentProvider.publicConfigStore._state.selectedAddress != null;
+    if (isOnRinkeby) {
+      $('#send-token-btn').show();
+    }
+  } else {
+    console.log("web3 is not running");
+  }
+
+  $('#send-token-form').on('submit', async function(event) {
+    let to = $(this).find('input[name="ether-address"]').val();
+    let amount = $(this).find('input[name="ether-amount"]').val();
+    const response = await fetch(('api/abi'));
+    const json = await response.json();
+    let contract = new web3.eth.Contract(json.abi, "<%= contract_address %>");
+    const accounts = await web3.eth.getAccounts();
+    await contract.methods.transfer(to, web3.utils.toWei(amount)).send({
+      from: accounts[0],
+    });
+    $(this).parent().parent().parent().hide();
+  });
+
+  $('#send-token-btn').on('click', function () {
+    if (isOnRinkeby) {
+      $('#send-label').text("Hello " + web3.currentProvider.publicConfigStore._state.selectedAddress);
+    }
+  });
+
+</script>
+
 </body>
 </html>

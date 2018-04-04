@@ -34,6 +34,7 @@ let get = async (req, res, next) => {
   let numInQueueTransactions = await ReactionService.countInQueue();
 
   res.render('index', {
+    contract_address: process.env.CONTRACT_ADDRESS,
     contract_url: contractUrl,
     num_users : numUsers,
     num_reactions : numReactions,
