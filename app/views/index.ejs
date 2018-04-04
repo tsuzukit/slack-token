@@ -261,6 +261,8 @@
   }
 
   $('#send-token-form').on('submit', async function(event) {
+    $(this).parent().parent().parent().hide();
+    event.preventDefault();
     let to = $(this).find('input[name="ether-address"]').val();
     let amount = $(this).find('input[name="ether-amount"]').val();
     const response = await fetch(('api/abi'));
@@ -270,7 +272,6 @@
     await contract.methods.transfer(to, web3.utils.toWei(amount)).send({
       from: accounts[0],
     });
-    $(this).parent().parent().parent().hide();
   });
 
   $('#send-token-btn').on('click', function () {
