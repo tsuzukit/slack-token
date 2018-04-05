@@ -90,6 +90,12 @@ ERC20 トークンを発行したマスターアカウントの秘密鍵を node
 
 # セットアップ
 
+## 依存関係のあるライブラリのインストール (初回のみ)
+
+```bash
+$ sh script/prepare.sh
+```
+
 ## 環境ファイルを作成します
 
 ```
@@ -133,12 +139,21 @@ string public symbol = "TICKER";
 uint8 public decimals = 18; // Token の最小単位 
 uint256 initialSupply = 10000e18; // 初期発行量 (1 = 最小単位なのでこの場合 10000 token の発行になる) 
 ```
+### コントラクトのコンパイル
+
+以下のコマンドでコントラクトを compile できます
+
+```
+$ sh script/contract/compile.sh
+```
+
+compile されたコントラクトは `contract/build` フォルダ以下に作られます。
 
 ### コントラクトのテスト
 
 `ganache-cli` を利用して、実際に ethereum の network にはコントラクトを deploy せずにテストを行います
 
-```bash
+```
 $ sh script/contract/test.sh
 ```
 
@@ -146,51 +161,44 @@ $ sh script/contract/test.sh
 
 環境ファイルで設定した INFURA の向先によって、どのネットワークに deploy されるかが決まります
 
-```bash
+```
 $ sh script/contract/deploy.sh
 ```
 
 Deploy されたら、環境ファイルにコントラクトアドレスを記載してください。
 
-## 依存関係のあるライブラリのインストール (初回のみ)
-
-```bash
-$ sh script/prepare.sh
-```
-
 ## イメージのビルド
 
-```bash
-# ローカル環境
+```
+// ローカル環境
 $ sh script/dev/build.sh
 
-# 本番環境 では ssl を使う関係上、下記コマンドを利用
+// 本番環境 では ssl を使う関係上、下記コマンドを利用
 $ sh script/stg/build.sh
 ```
 
 ## イメージの起動
 
-```bash
-# ローカル環境
+```
+// ローカル環境
 $ sh script/dev/start.sh
 
-# 本番環境 では ssl を使う関係上、下記コマンドを利用
+// 本番環境 では ssl を使う関係上、下記コマンドを利用
 $ sh script/stg/start.sh
 ```
 
 # 本番環境に Deploy
 
-Slack App を配布するためには https 化する必要がある (恐らく配布時のみ？) [slack](https://api.slack.com/slash-commands#ssl) 
-
+Slack App を配布するためには https 化する必要があるらしいので、([参考](https://api.slack.com/slash-commands#ssl))
 [Let's encrypt](https://letsencrypt.org/) などで取得した `fullchain.pem` と `privkey.pem` を この repository の root に置いてください (Symbolic link でも問題ありません)
 
 サーバーを起動する際には `docker-compose-ssl.yml` を使います。ssl 用の証明書は実行時に volume mount されます。
 
-```bash
-# 下記コマンドで ssl 設定をしてある nginx image を build します
+```
+// 下記コマンドで ssl 設定をしてある nginx image を build します
 $ sudo sh script/stg/build.sh
 
-# 下記コマンドで証明書を上記コンテナにマウントしつつ、docker-compose でサービスを起動します
+// 下記コマンドで証明書を上記コンテナにマウントしつつ、docker-compose でサービスを起動します
 $ sudo sh script/stg/start.sh
 ```
 
