@@ -55,6 +55,21 @@ ReactionService.updateStatusToComplete = async (id, blockHash, blockNumber, cumu
   }
 };
 
+ReactionService.updateStatusToUnknown = async (id) => {
+  try {
+    const reactions = await Reaction.find({_id: id}).exec();
+    if (reactions.length >= 1) {
+      let reaction = reactions[0];
+      reaction.status = 'unknown';
+      reaction.save();
+      return true;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+};
+
 ReactionService.findComplete = async () => {
   try {
     return await Reaction.find( { status: 'complete' } ).sort([['ts', -1]]).limit(40).exec();

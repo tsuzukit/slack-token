@@ -40,6 +40,7 @@ queue.process('transfer', async (job, ctx, done) => {
       result.gasUsed);
   } else {
     console.log('Result not found!');
+    reactionService.updateStatusToUnknown(job.data.reactionId);
   }
   done();
 });

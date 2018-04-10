@@ -22,7 +22,6 @@ let verifyChannel = async (req, res, next) => {
   // channel チェックする
   let channelId = req.body.event != null ? req.body.event.item.channel : req.body.channel_id;
   if (channelId == null) {
-    console.log("Channel is not found");
     res.status(500).send({});
     return;
   }
@@ -30,7 +29,6 @@ let verifyChannel = async (req, res, next) => {
   const targetChannels = process.env.CHANNEL.split(',');
   const isTargetChannel = process.env.CHANNEL === '' || targetChannels.includes(channelId);
   if (!isTargetChannel) {
-    console.log("Not a target channel");
     res.status(500).send({});
     return;
   }
