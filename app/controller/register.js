@@ -15,6 +15,10 @@ let post = async (req, res, next) => {
     res.status(200).send({ text: 'Hello `' + userName + '`. `' + address + '` is not valid ethereum address!' });
     return;
   }
+  if (!Ethereum.isValidChecksumAddress(address)) {
+    res.status(200).send({ text: 'Hello `' + userName + '`. `' + address + '` is not valid! Use address with checksum defined with EIP55.' });
+    return;
+  }
 
   let result = UserService.createOrUpdate(userId, userName, address);
   if (result) {

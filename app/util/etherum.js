@@ -1,4 +1,5 @@
 require('dotenv').config();
+const ethereumjsutil = require('ethereumjs-util');
 const Web3 = require('web3');
 const provider = new Web3.providers.HttpProvider(process.env.INFURA_ENDPOINT);
 const web3 = new Web3(provider);
@@ -11,6 +12,13 @@ exports.isAddress = (text) => {
   const row = text.replace('0x', '');
   const regex = /[0-9A-Fa-f]{40}/;
   return regex.test(row);
+};
+
+exports.isValidChecksumAddress = (text) => {
+  if (!text.startsWith('0x')) {
+    text = '0x' + text;
+  }
+  return ethereumjsutil.isValidChecksumAddress(text);
 };
 
 exports.getBalanceOfOwner = async () => {
